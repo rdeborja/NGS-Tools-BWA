@@ -1,0 +1,29 @@
+---
+abstract: 'Perl wrapper for the BWA alignment tool.'
+author:
+  - 'Richard de Borja <richard.deborja@oicr.on.ca>'
+build_requires:
+  Test::More: 0
+configure_requires:
+  Module::Build: 0
+dynamic_config: 1
+generated_by: 'Module::Build version 0.4205, CPAN::Meta::Converter version 2.120921'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: NGS-Tools-BWA
+provides:
+  NGS::Tools::BWA:
+    file: lib/NGS/Tools/BWA.pm
+    version: 0.01
+requires:
+  Carp: 0
+  File::Basename: 0
+  Moose::Role: 0
+  MooseX::Params::Validate: 0
+  autodie: 0
+  namespace::autoclean: 0
+resources:
+  license: http://dev.perl.org/licenses/
+version: 0.01
