@@ -1,37 +1,7 @@
 Revision history for NGS-Tools-BWA
 
-0.01    2013-08-12
+0.01    2014-02-24
         Initial release.
 
-0.02    2013-09-02
-        Added a file output parameter to the "aln" method.  Includes a printout
-        of the returned values from the hash.
-
-0.03    2013-10-07
-        Added threads parameter to the constructor (default: 4), added parameter
-        validation using (Params::Validate).  Changed package creation from
-        ExtUtils::MakeMaker to Module::Build.
-
-0.04    2013-10-10
-        Changed output of index_ref from file to output to stay consistent with
-        other methods.  Updated documentation for PODs.
-
-0.05    2013-11-21
-        Converted to MooseX::Params::Validate from Params::Validate for method
-        argument validation.  Removed requirement to identify fastq1 and fastq2
-        in the constructor.
-
-0.06    2013-12-09
-        Converted the Moose class to a Moose Role to simplify the process of
-        creating pipelines.  Updated the tests to test the role using
-        Moose::ClassCompositor.
-
-0.07    2013-12-12
-        Added output argument to the BWA aln method.  Fixed test case to handle
-        this.
-
-0.08    2014-01-03
-        Fixed the bug where methods aln and sampe used a direct call to
-        $self->index instead of the passed argument with a default value of
-        $self->index
-
+0.02    2013-02-26
+        Added "samse" for single end alignment.  Includes tests for the method.

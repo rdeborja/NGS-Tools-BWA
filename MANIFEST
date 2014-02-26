@@ -7,6 +7,7 @@ script/run_bwa_alignment.pl
 t/01-index.t
 t/02-aln.t
 t/03-sampe.t
+t/04-samse.t
 t/example/fasta/test.fasta
 t/example/fasta/test.fasta.amb
 t/example/fasta/test.fasta.ann

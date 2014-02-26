@@ -13,11 +13,11 @@ NGS::Tools::BWA - Perl wrapper for the BWA alignment tool.
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 =head1 SYNOPSIS
 
@@ -305,6 +305,93 @@ sub index_ref {
 
     return(\%return_values);
     }  
+
+=head2 $obj->samse()
+
+Run the BWA samse aligner for single end data.
+
+=head3 Arguments:
+
+=over 2
+
+=item * fastq: FASTQ file
+
+=item * aln: output from the bwa aln command
+
+=item * index: Prefix for the bwa index reference files
+
+=item * output: Filename for output, if left blank will use the input FASTQ file with appended information
+
+=item * bwa: Full path to the BWA tool
+
+=back
+
+=cut
+
+sub samse {
+    my $self = shift;
+    my %args = validated_hash(
+        \@_,
+        fastq => {
+            isa         => 'Str',
+            required    => 1
+            },
+        aln => {
+            isa         => 'Str',
+            required    => 1
+            },
+        index => {
+            isa         => 'Str',
+            required    => 1,
+            },
+        output => {
+            isa         => 'Str',
+            required    => 0,
+            default     => ''
+            },
+        bwa => {
+            isa         => 'Str',
+            required    => 0,
+            default     => 'bwa'        
+            }
+        );
+
+    my $output; 
+    if ('' eq $args{'output'}) {
+        $output = join('.',
+            basename($args{'fastq'}, qw(.fastq .fq .fastq.gz .fq.gz)),
+            'sam'
+            );
+        }
+    else {
+        $output = $args{'output'};
+        }
+
+    my $program = join(' ',
+        $args{'bwa'},
+        'samse'
+        );
+
+    my $options = join(' ',
+        '-f', $output,
+        $args{'index'},
+        $args{'aln'},
+        $args{'fastq'},
+        );
+
+    my $cmd = join(' ',
+        $program,
+        $options
+        );
+
+
+    my %return_values = (
+        cmd => $cmd,
+        output => $output
+        );
+
+    return(\%return_values);
+    }
 
 =head1 AUTHOR
 
