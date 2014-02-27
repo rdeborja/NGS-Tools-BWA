@@ -3,7 +3,7 @@
    "author" : [
       "Richard de Borja <richard.deborja@oicr.on.ca>"
    ],
-   "dynamic_config" : 1,
+   "dynamic_config" : 0,
    "generated_by" : "Module::Build version 0.4205",
    "license" : [
       "perl_5"
@@ -38,7 +38,7 @@
    "provides" : {
       "NGS::Tools::BWA" : {
          "file" : "lib/NGS/Tools/BWA.pm",
-         "version" : "0.02"
+         "version" : "0.01"
       }
    },
    "release_status" : "stable",
@@ -47,5 +47,5 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "0.02"
+   "version" : "0.01"
 }

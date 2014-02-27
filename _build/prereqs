@@ -1,0 +1,17 @@
+do{ my $x = {
+       'build_requires' => {
+                             'Test::More' => 0
+                           },
+       'test_requires' => {},
+       'conflicts' => {},
+       'requires' => {
+                       'Moose::Role' => 0,
+                       'namespace::autoclean' => 0,
+                       'autodie' => 0,
+                       'MooseX::Params::Validate' => 0,
+                       'File::Basename' => 0,
+                       'Carp' => 0
+                     },
+       'recommends' => {}
+     };
+$x; }

@@ -1,0 +1,6 @@
+do{ my $x = {
+       'NGS-Tools-BWA-*' => 1,
+       'NGS-Tools-BWA-0.02' => 1,
+       'blib' => 1
+     };
+$x; }
