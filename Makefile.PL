@@ -2,19 +2,19 @@
 use ExtUtils::MakeMaker;
 WriteMakefile
 (
-  'PL_FILES' => {},
-  'INSTALLDIRS' => 'site',
   'NAME' => 'NGS::Tools::BWA',
-  'EXE_FILES' => [],
   'VERSION_FROM' => 'lib/NGS/Tools/BWA.pm',
   'PREREQ_PM' => {
-                   'Test::More' => 0,
-                   'Moose::Role' => 0,
-                   'namespace::autoclean' => 0,
-                   'autodie' => 0,
-                   'MooseX::Params::Validate' => 0,
+                   'Carp' => 0,
                    'File::Basename' => 0,
-                   'Carp' => 0
-                 }
+                   'Moose::Role' => 0,
+                   'MooseX::Params::Validate' => 0,
+                   'Test::More' => 0,
+                   'autodie' => 0,
+                   'namespace::autoclean' => 0
+                 },
+  'INSTALLDIRS' => 'site',
+  'EXE_FILES' => [],
+  'PL_FILES' => {}
 )
 ;

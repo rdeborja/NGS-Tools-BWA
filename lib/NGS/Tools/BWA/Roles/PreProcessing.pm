@@ -1,59 +1,119 @@
-package NGS::Tools::BWA;
+package NGS::Tools::BWA::Roles::PreProcessing;
 use Moose::Role;
 use MooseX::Params::Validate;
 
-with 'NGS::Tools::BWA::Roles::PreProcessing';
-with 'NGS::Tools::BWA::Roles::Align';
-with 'NGS::Tools::BWA::Roles::Mem';
-
+use strict;
+use warnings FATAL => 'all';
 use namespace::autoclean;
 use autodie;
-use Carp;
-use File::Basename;
 
 =head1 NAME
 
-NGS::Tools::BWA - Perl wrapper for the BWA alignment tool.
-
-=head1 VERSION
-
-Version 0.03
-
-=cut
-
-our $VERSION = '0.03';
+NGS::Tools::BWA::Roles::PreProcessing
 
 =head1 SYNOPSIS
 
-A Moose Role containing methods that perform BWA alignment.  This can be used
-by any Moose class to simplify its construction.
+A Perl Moose role that handles pre-processing of data before running BWA alignment.
 
-    package <package::name>
-    use Moose;
-    with 'NGS::Tools::BWA';
-
-=head1 VARIABLES
+=head1 ATTRIBUTES AND DELEGATES
 
 =head1 SUBROUTINES/METHODS
+
+=head2 $obj->index_ref()
+
+Create a reference index from a FASTA file.
+
+=head3 Arguments:
+
+=over 2
+
+=item * ref: FASTA reference file to be processed
+
+=itme # type: index type (default: 'bwtsw')
+
+=back
+
+=head3 Return:
+
+=over 2
+
+=item * $return_values->{'cmd'}: command to be executed
+
+=item * $return_values->{'output'}: Index file prefix used in subsequent BWA commands
+
+=back
+
+=cut
+
+sub index_ref {
+    my $self = shift;
+    my %args = validated_hash(
+        \@_,
+        ref => {
+            isa => 'Str',
+            required => 1
+            },
+        type => {
+            isa => 'Str',
+            required => 0,
+            default => 'bwtsw'
+            },
+        bwa => {
+            isa => 'Str',
+            required => 0,
+            default => 'bwa'
+            }
+        );
+
+    unless(-e $args{'ref'}) {
+        Carp::croak("FASTA file $args{'ref'} does not exist, exiting...")
+        }
+
+    my $program = join(' ',
+        $args{'bwa'},
+        'index'
+        );
+
+    my $options = join(' ',
+        '-a', $args{'type'},
+        $args{'ref'}
+        );
+
+    my $cmd = join(' ',
+        $program,
+        $options
+        );
+
+    my %return_values = (
+        cmd     => $cmd,
+        output  => $args{'ref'}
+        );
+
+    return(\%return_values);
+    }  
 
 
 =head1 AUTHOR
 
-Richard de Borja, C<< <richard.deborja at oicr.on.ca> >>
+Richard de Borja, C<< <richard.deborja at sickkids.ca> >>
+
+=head1 ACKNOWLEDGEMENT
+
+Dr. Adam Shlien, PI -- The Hospital for Sick Children
+
+Dr. Roland Arnold -- The Hospital for Sick Children
 
 =head1 BUGS
 
-Please report any bugs or feature requests to C<bug-ngs-tools-bwa at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=NGS-Tools-BWA>.  I will be notified, and then you'll
+Please report any bugs or feature requests to C<bug-test-test at rt.cpan.org>, or through
+the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=test-test>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
-
 
 =head1 SUPPORT
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc NGS::Tools::BWA
-
+    perldoc NGS::Tools::BWA::Roles::PreProcessing
 
 You can also look for information at:
 
@@ -61,26 +121,23 @@ You can also look for information at:
 
 =item * RT: CPAN's request tracker (report bugs here)
 
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=NGS-Tools-BWA>
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=test-test>
 
 =item * AnnoCPAN: Annotated CPAN documentation
 
-L<http://annocpan.org/dist/NGS-Tools-BWA>
+L<http://annocpan.org/dist/test-test>
 
 =item * CPAN Ratings
 
-L<http://cpanratings.perl.org/d/NGS-Tools-BWA>
+L<http://cpanratings.perl.org/d/test-test>
 
 =item * Search CPAN
 
-L<http://search.cpan.org/dist/NGS-Tools-BWA/>
+L<http://search.cpan.org/dist/test-test/>
 
 =back
 
-
 =head1 ACKNOWLEDGEMENTS
-
-Dr. Adam Shlien, PI -- The Hospital for Sick Children
 
 =head1 LICENSE AND COPYRIGHT
 
@@ -122,9 +179,8 @@ CONTRIBUTOR WILL BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, OR
 CONSEQUENTIAL DAMAGES ARISING IN ANY WAY OUT OF THE USE OF THE PACKAGE,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
 =cut
 
-1; # End of NGS::Tools::BWA
-
 no Moose::Role;
+
+1; # End of NGS::Tools::BWA::Roles::PreProcessing

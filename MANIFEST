@@ -1,13 +1,20 @@
 Build.PL
 Changes
 lib/NGS/Tools/BWA.pm
-MANIFEST
+lib/NGS/Tools/BWA/Roles/Align.pm
+lib/NGS/Tools/BWA/Roles/Mem.pm
+lib/NGS/Tools/BWA/Roles/PreProcessing.pm
+Makefile.PL
+MANIFEST			This list of files
+META.json
+META.yml
 README
 script/run_bwa_alignment.pl
 t/01-index.t
 t/02-aln.t
 t/03-sampe.t
 t/04-samse.t
+t/05-mem.t
 t/example/fasta/test.fasta
 t/example/fasta/test.fasta.amb
 t/example/fasta/test.fasta.ann
@@ -16,6 +23,3 @@ t/example/fasta/test.fasta.pac
 t/example/fasta/test.fasta.sa
 t/example/fastq/file1.fastq
 t/example/fastq/file2.fastq
-Makefile.PL
-META.yml
-META.json

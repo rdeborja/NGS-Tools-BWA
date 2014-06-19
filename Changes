@@ -5,3 +5,7 @@ Revision history for NGS-Tools-BWA
 
 0.02    2013-02-26
         Added "samse" for single end alignment.  Includes tests for the method.
+
+0.03    2014-06-17
+        Moved methods to Perl role files and called methods within main class.  Added
+        "bwa mem" to the package.

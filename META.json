@@ -38,7 +38,16 @@
    "provides" : {
       "NGS::Tools::BWA" : {
          "file" : "lib/NGS/Tools/BWA.pm",
-         "version" : "0.02"
+         "version" : "0.03"
+      },
+      "NGS::Tools::BWA::Roles::Align" : {
+         "file" : "lib/NGS/Tools/BWA/Roles/Align.pm"
+      },
+      "NGS::Tools::BWA::Roles::Mem" : {
+         "file" : "lib/NGS/Tools/BWA/Roles/Mem.pm"
+      },
+      "NGS::Tools::BWA::Roles::PreProcessing" : {
+         "file" : "lib/NGS/Tools/BWA/Roles/PreProcessing.pm"
       }
    },
    "release_status" : "stable",
@@ -47,5 +56,5 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "0.02"
+   "version" : "0.03"
 }
