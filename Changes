@@ -9,3 +9,7 @@ Revision history for NGS-Tools-BWA
 0.03    2014-06-17
         Moved methods to Perl role files and called methods within main class.  Added
         "bwa mem" to the package.
+
+0.04    2014-06-27
+        Added SplitFastq role to simplify parallelization of alignment by splitting
+        input FASTQ files.

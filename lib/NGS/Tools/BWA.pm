@@ -5,6 +5,7 @@ use MooseX::Params::Validate;
 with 'NGS::Tools::BWA::Roles::PreProcessing';
 with 'NGS::Tools::BWA::Roles::Align';
 with 'NGS::Tools::BWA::Roles::Mem';
+with 'NGS::Tools::BWA::Roles::SplitFastq';
 
 use namespace::autoclean;
 use autodie;
@@ -17,11 +18,11 @@ NGS::Tools::BWA - Perl wrapper for the BWA alignment tool.
 
 =head1 VERSION
 
-Version 0.03
+Version 0.04
 
 =cut
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 =head1 SYNOPSIS
 
@@ -35,7 +36,6 @@ by any Moose class to simplify its construction.
 =head1 VARIABLES
 
 =head1 SUBROUTINES/METHODS
-
 
 =head1 AUTHOR
 
