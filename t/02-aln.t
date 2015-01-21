@@ -10,7 +10,7 @@ use Env qw(TMPDIR);
 my $test_class_factory = MooseX::ClassCompositor->new(
 	{ class_basename => 'Test' }
 	);
-my $bwa_test_class = $test_class_factory->class_for('NGS::Tools::BWA');
+my $bwa_test_class = $test_class_factory->class_for('NGS::Tools::BWA::Roles::Align');
 
 my $fasta = "$Bin/example/fasta/test.fasta";
 my $index = "$Bin/example/fasta/test.fasta";

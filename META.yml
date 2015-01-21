@@ -16,7 +16,7 @@ name: NGS-Tools-BWA
 provides:
   NGS::Tools::BWA:
     file: lib/NGS/Tools/BWA.pm
-    version: 0.03
+    version: 0.05
   NGS::Tools::BWA::Roles::Align:
     file: lib/NGS/Tools/BWA/Roles/Align.pm
     version: 0
@@ -25,6 +25,9 @@ provides:
     version: 0
   NGS::Tools::BWA::Roles::PreProcessing:
     file: lib/NGS/Tools/BWA/Roles/PreProcessing.pm
+    version: 0
+  NGS::Tools::BWA::Roles::SplitFastq:
+    file: lib/NGS/Tools/BWA/Roles/SplitFastq.pm
     version: 0
 requires:
   Carp: 0
@@ -35,4 +38,4 @@ requires:
   namespace::autoclean: 0
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.03
+version: 0.05

@@ -14,7 +14,7 @@ my $test_class_factory = MooseX::ClassCompositor->new(
 	);
 
 # create a temporary class based on the given Moose::Role package
-my $test_class = $test_class_factory->class_for('NGS::Tools::BWA');
+my $test_class = $test_class_factory->class_for('NGS::Tools::BWA::Roles::Align');
 
 # a couple of input variables
 my $fastq = 'input.fastq';

@@ -1,4 +1,4 @@
-use Test::More tests => 1;
+use Test::More tests => 2;
 use Test::Moose;
 use Test::Exception;
 use MooseX::ClassCompositor;
@@ -28,4 +28,10 @@ lives_ok
 	'Class instantiated';
 my $split_output = $fastq->split_fastq();
 
-print Dumper($split_output);
+my $expected_cmd = join(' ',
+	'split',
+	'-l 10000000',
+	'-d test.fastq.gz',
+	'test.fastq.gz.',
+	);
+is($split_output->{'cmd'}, $expected_cmd, 'split command matches expected');

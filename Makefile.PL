@@ -14,7 +14,9 @@ WriteMakefile
                    'namespace::autoclean' => 0
                  },
   'INSTALLDIRS' => 'site',
-  'EXE_FILES' => [],
+  'EXE_FILES' => [
+                   'bin/split_fastq_file.pl'
+                 ],
   'PL_FILES' => {}
 )
 ;

@@ -13,7 +13,8 @@ use strict;
 use Carp;
 use Getopt::Long;
 use Pod::Usage;
-use BWA
+use NGS::Tools::BWA;
+
 ### COMMAND LINE DEFAULT ARGUMENTS ################################################################
 # list of arguments and default values go here as hash key/value pairs
 our %opts = (
