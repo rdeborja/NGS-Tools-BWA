@@ -19,21 +19,6 @@ A Perl role for splitting FASTQ files for parallelized alignment.
 
 =head1 ATTRIBUTES AND DELEGATES
 
-=head2 $obj->fastq
-
-Name of FASTQ file to process
-
-=cut
-
-has 'fastq' => (
-    is          => 'rw',
-    isa         => 'Str',
-    required	=> 1,
-    reader		=> 'get_fastq',
-    writer		=> 'set_fastq'
-    );
-
-
 =head1 SUBROUTINES/METHODS
 
 =head2 $obj->split_fastq()
@@ -74,8 +59,7 @@ sub split_fastq {
 		\@_,
 		fastq => {
 			isa         => 'Str',
-			required    => 0,
-			default		=> $self->get_fastq()
+			required    => 1
 			},
 		number_of_reads => {
 			isa			=> 'Int',
@@ -135,8 +119,6 @@ Richard de Borja, C<< <richard.deborja at sickkids.ca> >>
 =head1 ACKNOWLEDGEMENT
 
 Dr. Adam Shlien, PI -- The Hospital for Sick Children
-
-Dr. Roland Arnold -- The Hospital for Sick Children
 
 =head1 BUGS
 

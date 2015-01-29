@@ -1,5 +1,5 @@
 package NGS::Tools::BWA;
-use Moose::Role;
+use Moose;
 use MooseX::Params::Validate;
 
 with 'NGS::Tools::BWA::Roles::PreProcessing';
@@ -18,11 +18,11 @@ NGS::Tools::BWA - Perl wrapper for the BWA alignment tool.
 
 =head1 VERSION
 
-Version 0.05
+Version 0.07
 
 =cut
 
-our $VERSION = '0.05';
+our $VERSION = '0.07';
 
 =head1 SYNOPSIS
 
@@ -125,6 +125,8 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 =cut
 
-1; # End of NGS::Tools::BWA
+no Moose;
 
-no Moose::Role;
+__PACKAGE__->meta->make_immutable;
+
+1; # End of NGS::Tools::BWA

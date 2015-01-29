@@ -31,20 +31,30 @@ lives_ok
 		}
 	'Class instantiated';
 
-
 my @additional_options = ();
+my $bwa_read_group = $bwa->create_read_group(
+	id => 'test_sample_id',
+	sample => 'test_sample',
+	library => 'test_library',
+	center => 'center'
+	);
 my $bwa_run = $bwa->mem(
 	fastq1 => $fastq1,
 	fastq2 => $fastq2,
 	reference => $index,
-	options => \@additional_options
+	options => \@additional_options,
+	readgroup => $bwa_read_group,
+	samtools => 'samtools'
 	);
 
 my $expected_command = join(' ',
-	'bwa mem -t 2 ',
+	'bwa mem -t 1',
+	'-R @RG\tID:test_sample_id\tSM:test_sample\tLB:test_library\tPL:ILLUMINA\tPU:NONE\tCN:center ',
 	"$Bin/example/fasta/test.fasta",
 	"$Bin/example/fastq/file1.fastq",
 	"$Bin/example/fastq/file2.fastq",
+	'|',
+	'samtools view -S -b -',
 	'> file1.sam'
 	);
 is($bwa_run->{'cmd'}, $expected_command, 'command matches expected');

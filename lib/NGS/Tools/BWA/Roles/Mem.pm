@@ -7,6 +7,7 @@ use warnings FATAL => 'all';
 use namespace::autoclean;
 use autodie;
 use File::Basename;
+use Data::UUID;
 
 =head1 NAME
 
@@ -38,7 +39,9 @@ Run the BWA mem alignment algorithm.
 
 =item * bwa: full path to the BWA program (default: bwa)
 
-=item * threads: number of threads to execute BWA with (default: 2)
+=item * threads: number of threads to execute BWA with (default: 1)
+
+=item * options: additional options to pass to BWA (optional)
 
 =back
 
@@ -73,12 +76,22 @@ sub mem {
 		threads => {
 			isa			=> 'Int',
 			required	=> 0,
-			default		=> 2
+			default		=> 1
 			},
 		options => {
 			isa			=> 'ArrayRef',
 			required	=> 0,
 			default		=> []
+			},
+		readgroup => {
+			isa			=> 'Str',
+			required	=> 0,
+			default		=> ''
+			},
+		samtools => {
+			isa			=> 'Str',
+			required	=> 0,
+			default		=> 'samtools'
 			}
 		);
 
@@ -116,15 +129,36 @@ sub mem {
 
 	# for now, we're using a subset of options, as time progresses we'll expand the
 	# list to the full set of options
-	my $options = join(' ',
-		'-t', $args{'threads'},
-		$additional_options,
-		$args{'reference'},
-		$args{'fastq1'},
-		$args{'fastq2'},
-		'>',
-		$output
-		);
+	my $options;
+	if ($args{'readgroup'} ne '') {
+		$options = join(' ',
+			'-t', $args{'threads'},
+			'-R', $args{'readgroup'},
+			$additional_options,
+			$args{'reference'},
+			$args{'fastq1'},
+			$args{'fastq2'},
+			'|',
+			$args{'samtools'},
+			'view -S -b -',
+			'>',
+			$output
+			);
+		}
+	else {
+		$options = join(' ',
+			'-t', $args{'threads'},
+			$additional_options,
+			$args{'reference'},
+			$args{'fastq1'},
+			$args{'fastq2'},
+			'|',
+			$args{'samtools'},
+			'view -S -b -',
+			'>',
+			$output
+			);
+		}
 
 	# finally, construct the command that can be executed
 	my $cmd = join(' ',
@@ -143,6 +177,89 @@ sub mem {
 	return(\%return_values);
 	}
 
+=head2 $obj->create_read_group()
+
+Construct the read group string that will be used in the BAM header.
+
+=head3 Arguments:
+
+=over 2
+
+=item * id: (optional) unique id for the read group, will autogenerate a UUID if none provided
+
+=item * sample: (required) name of the sample
+
+=item * library: (required) name of the library
+
+=item * center: (required) center where sample/library was sequenced
+
+=item * platform: (default: ILLUMINA) sequencer technology used for sequence data
+
+=item * platform_unit: (default: NONE) flowcell barcode
+
+=back
+
+=cut
+
+sub create_read_group {
+	my $self = shift;
+	my %args = validated_hash(
+		\@_,
+		id => {
+			isa			=> 'Str',
+			required	=> 0,
+			default		=> ''
+			},
+		sample => {
+			isa         => 'Str',
+			required    => 1
+			},
+		library => {
+			isa			=> 'Str',
+			required	=> 1
+			},
+		center => {
+			isa			=> 'Str',
+			required	=> 1
+			},
+		platform => {
+			isa			=> 'Str',
+			required	=> 0,
+			default		=> 'ILLUMINA'
+			},
+		platform_unit => {
+			isa			=> 'Str',
+			required	=> 0,
+			default 	=> 'NONE'
+			}
+
+		);
+
+	my $uuid_string;
+	if ($args{'id'} eq '') {
+		# create a UUID for the read group
+		my $uuid_object = Data::UUID->new();
+		my $uuid = $uuid_object->create();
+		$uuid_string = $uuid_object->to_string($uuid);
+		}
+	else {
+		$uuid_string = $args{'id'};
+		}
+
+	# construct the read group as reuqired
+	my $read_group_string = join('\t',
+		'@RG',
+		'ID:' . $uuid_string,
+		'SM:' . $args{'sample'},
+		'LB:' . $args{'library'},
+		'PL:' . $args{'platform'},
+		'PU:' . $args{'platform_unit'},
+		'CN:' . $args{'center'}
+		);
+
+	return($read_group_string);
+	}
+
 =head1 AUTHOR
 
 Richard de Borja, C<< <richard.deborja at sickkids.ca> >>
@@ -150,10 +267,6 @@ Richard de Borja, C<< <richard.deborja at sickkids.ca> >>
 =head1 ACKNOWLEDGEMENT
 
 Dr. Adam Shlien, PI -- The Hospital for Sick Children
-
-Dr. Roland Arnold -- The Hospital for Sick Children
-
-Andrej Rosic -- The Hospital for Sick Children
 
 =head1 BUGS
 

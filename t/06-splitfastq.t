@@ -21,12 +21,10 @@ my $fastq;
 my $fastq_file = 'test.fastq.gz';
 lives_ok
 	{
-		$fastq = $test_class->new(
-			fastq => $fastq_file
-			);
+		$fastq = $test_class->new();
 		}
 	'Class instantiated';
-my $split_output = $fastq->split_fastq();
+my $split_output = $fastq->split_fastq(fastq => $fastq_file);
 
 my $expected_cmd = join(' ',
 	'split',

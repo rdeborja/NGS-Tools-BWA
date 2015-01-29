@@ -1,12 +1,8 @@
-.DS_Store
+bin/run_bwa_mem.pl
 bin/split_fastq_file.pl
 Build.PL
 Changes
-lib/.DS_Store
-lib/NGS/.DS_Store
-lib/NGS/Tools/.DS_Store
 lib/NGS/Tools/BWA.pm
-lib/NGS/Tools/BWA/.DS_Store
 lib/NGS/Tools/BWA/Roles/Align.pm
 lib/NGS/Tools/BWA/Roles/Mem.pm
 lib/NGS/Tools/BWA/Roles/PreProcessing.pm
@@ -22,6 +18,7 @@ t/03-sampe.t
 t/04-samse.t
 t/05-mem.t
 t/06-splitfastq.t
+t/07-readgroups.t
 t/example/fasta/test.fasta
 t/example/fasta/test.fasta.amb
 t/example/fasta/test.fasta.ann

@@ -19,7 +19,7 @@ use NGS::Tools::BWA;
 # list of arguments and default values go here as hash key/value pairs
 our %opts = (
 	fastq => undef,
-
+    number_of_lines => 40000000
     );
 
 ### MAIN CALLER ###################################################################################
@@ -43,7 +43,7 @@ sub main {
         "help|?",
         "man",
         "fastq|f=s",
-
+        "number_of_lines|n:i"
         ) or pod2usage(64);
     
     pod2usage(1) if $opts{'help'};
@@ -56,6 +56,9 @@ sub main {
             }
         }
 
+    my $bwa = NGS::Tools::BWA->new();
+    $bwa->split_fastq();
+    
     return 0;
     }
 
@@ -72,8 +75,10 @@ split_fastq_file.pl
 B<split_fastq_file.pl> [options] [file ...]
 
     Options:
-    --help          brief help message
-    --man           full documentation
+    --help              brief help message
+    --man               full documentation
+    --fastq             name of FASTQ file to be split (required)
+    --number_of_lines   number of lines within each split file (default: 40000000)
 
 =head1 OPTIONS
 
@@ -87,6 +92,15 @@ Print a brief help message and exit.
 
 Print the manual page.
 
+=item B<--fastq>
+
+Name of FASTQ file to split.
+
+=item B<--number_of_lines>
+
+Number of lines in each split FASTQ file (default: 40000000).  This value must be an integer
+that is a multiple of 4 since 4 lines represent a single read in the FASTQ format.
+
 =back
 
 =head1 DESCRIPTION
@@ -95,15 +109,15 @@ B<split_fastq_file.pl> Split a FASTQ file into multiple FASTQ files for parallel
 
 =head1 EXAMPLE
 
-split_fastq_file.pl
+split_fastq_file.pl --fastq file.fastq --number_of_lines 80000000
 
 =head1 AUTHOR
 
-Richard de Borja -- Molecular Genetics
+Richard de Borja -- The Hospital for Sick Children
 
-The Hospital for Sick Children
+=head1 ACKNOWLEDGEMENTS
 
-=head1 SEE ALSO
+Dr. Adam Shlien, PI -- The Hospital for Sick Children
 
 =cut
 
