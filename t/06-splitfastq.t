@@ -18,18 +18,21 @@ my $test_class = $test_class_factory->class_for('NGS::Tools::BWA::Roles::SplitFa
 
 # instantiate the test class based on the given role
 my $fastq;
-my $fastq_file = 'test.fastq.gz';
+my $fastq_file = "$Bin/example/fastq/read1.fastq";
 lives_ok
 	{
 		$fastq = $test_class->new();
 		}
 	'Class instantiated';
-my $split_output = $fastq->split_fastq(fastq => $fastq_file);
+my $split_output = $fastq->split_fastq(
+	fastq => $fastq_file,
+	number_of_reads => 4000
+	);
 
 my $expected_cmd = join(' ',
 	'split',
-	'-l 10000000',
-	'-d test.fastq.gz',
-	'test.fastq.gz.',
+	'-l 4000',
+	"-d $Bin/example/fastq/read1.fastq",
+	'read1.fastq.',
 	);
 is($split_output->{'cmd'}, $expected_cmd, 'split command matches expected');

@@ -24,4 +24,6 @@ Revision history for NGS-Tools-BWA
 
 0.07    2015-01-29
         Added a method to construct the read group string for use with BWA mem.
-        
+
+0.08    2015-02-02
+        Fixed test for splitting FASTQ files.

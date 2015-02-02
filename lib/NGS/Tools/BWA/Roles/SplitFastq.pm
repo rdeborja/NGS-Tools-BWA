@@ -80,7 +80,7 @@ sub split_fastq {
 
 	my $prefix;
 	if ($args{'prefix'} eq '') {
-		$prefix = $args{'fastq'} . '.';
+		$prefix = basename($args{'fastq'}) . '.';
 		}
 	else {
 		$prefix = $args{'prefix'};
@@ -103,10 +103,40 @@ sub split_fastq {
 		$prefix
 		);
 
-
 	my %return_values = (
 		output => $prefix,
 		cmd => $cmd
+		);
+
+	return(\%return_values);
+	}
+
+=head2 $obj->get_fastq_files()
+
+Get a list of FASTQ files that have been split by the split_fastq() method.
+
+=head3 Arguments:
+
+=over 2
+
+=item * directory: name of directory containing the split FASTQ files
+
+=back
+
+=cut
+
+sub get_fastq_files {
+	my $self = shift;
+	my %args = validated_hash(
+		\@_,
+		directory => {
+			isa         => 'Str',
+			required    => 1
+			}
+		);
+
+	my %return_values = (
+
 		);
 
 	return(\%return_values);
