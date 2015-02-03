@@ -27,3 +27,6 @@ Revision history for NGS-Tools-BWA
 
 0.08    2015-02-02
         Fixed test for splitting FASTQ files.
+
+0.09    2015-02-03
+        Fixed read group bug.  Added single quotes around read group argument.

@@ -75,6 +75,21 @@ sub split_fastq {
 			isa			=> 'Str',
 			required	=> 0,
 			default		=> 'y'
+			},
+		is_gzipped => {
+			isa			=> 'Str',
+			required	=> 0,
+			default		=> 'false'
+			},
+		split => {
+			isa			=> 'Str',
+			required	=> 0,
+			default		=> 'split'
+			},
+		zcat => {
+			isa			=> 'Str',
+			required	=> 0,
+			default		=> 'zcat'
 			}
 		);
 
@@ -96,47 +111,31 @@ sub split_fastq {
 			);
 		}
 
-	my $cmd = join(' ',
-		'split',
-		$options,
-		$args{'fastq'},
-		$prefix
-		);
+	my $cmd;
+	if ($args{'is_gzipped'} eq 'true') {
+		$prefix =~ s/\.gz//;
+		$cmd = join(' ',
+			$args{'zcat'},
+			$args{'fastq'},
+			'|',
+			$args{'split'},
+			$options,
+			'-',
+			$prefix
+			);
+		}
+	else {
+		$cmd = join(' ',
+			$args{'split'},
+			$options,
+			$args{'fastq'},
+			$prefix
+			);
+		}
 
 	my %return_values = (
 		output => $prefix,
 		cmd => $cmd
-		);
-
-	return(\%return_values);
-	}
-
-=head2 $obj->get_fastq_files()
-
-Get a list of FASTQ files that have been split by the split_fastq() method.
-
-=head3 Arguments:
-
-=over 2
-
-=item * directory: name of directory containing the split FASTQ files
-
-=back
-
-=cut
-
-sub get_fastq_files {
-	my $self = shift;
-	my %args = validated_hash(
-		\@_,
-		directory => {
-			isa         => 'Str',
-			required    => 1
-			}
-		);
-
-	my %return_values = (
-
 		);
 
 	return(\%return_values);

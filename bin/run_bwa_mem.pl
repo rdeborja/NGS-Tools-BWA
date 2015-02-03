@@ -1,11 +1,13 @@
 #!/usr/bin/env perl
 
-### run_bwa_mem.pl ##############################################################################
+### run_bwa_mem.pl ################################################################################
 # Run the BWA Mem pipeline.
 
 ### HISTORY #######################################################################################
 # Version       Date            Developer           Comments
 # 0.01          2015-01-27      rdeborja            initial development
+# 0.02          2015-02-03      rdeborja            added qsub submission to main program, fixed
+#                                                   read group issue
 
 ### INCLUDES ######################################################################################
 use warnings;
@@ -18,6 +20,7 @@ use IPC::Run3;
 use Data::Dumper;
 use HPF::PBS;
 use File::ShareDir ':ALL';
+use IPC::Run3;
 
 ### COMMAND LINE DEFAULT ARGUMENTS ################################################################
 # list of arguments and default values go here as hash key/value pairs
@@ -109,7 +112,9 @@ sub main {
         walltime => '240:00:00',
         submit => 'true'
         );
-    print Dumper($bwa_mem_run);
+    $pbs->submit_job(
+        script => $bwa_pbs->{'output'}
+        );
 
     return 0;
     }
@@ -134,7 +139,7 @@ B<run_bwa_mem.pl> [options] [file ...]
     --center        name of sequencing center (default: ca.sickkids.dplm)
     --fastq1        FASTQ file for read 1
     --fastq2        FASTQ file for read 2
-    --reference     reference genome for alignnment in fASTA format
+    --reference     reference genome for alignnment in FASTA format
     --options       list of options to pass to bwa mem
 
 =head1 OPTIONS

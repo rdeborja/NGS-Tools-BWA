@@ -43,6 +43,10 @@ Run the BWA mem alignment algorithm.
 
 =item * options: additional options to pass to BWA (optional)
 
+=item * readgroup: read group string to be used in SAM/BAM header
+
+=item * samtools: name of samtools program (default: samtools)
+
 =back
 
 =cut
@@ -100,8 +104,8 @@ sub mem {
 	my $output;
 	if ($args{'output'} eq '') {
 		$output = join('.',
-			basename($args{'fastq1'}, qw(.fastq .fq. fastq.gz .fq.gz)),
-			'sam'
+			basename($args{'fastq1'}, qw(.fastq .fq. .fastq.gz .fq.gz)),
+			'bam'
 			);
 		}
 	else {
@@ -131,9 +135,14 @@ sub mem {
 	# list to the full set of options
 	my $options;
 	if ($args{'readgroup'} ne '') {
+		my $readgroup = join('',
+			"\'",
+			$args{'readgroup'},
+			"\'"
+			);
 		$options = join(' ',
 			'-t', $args{'threads'},
-			'-R', $args{'readgroup'},
+			'-R', $readgroup,
 			$additional_options,
 			$args{'reference'},
 			$args{'fastq1'},

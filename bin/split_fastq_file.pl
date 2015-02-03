@@ -6,6 +6,7 @@
 ### HISTORY #######################################################################################
 # Version       Date            Developer           Comments
 # 0.01          2014-06-27		rdeborja            initial development
+# 0.02          2015-02-03      rdeborja            added gzip functionality
 
 ### INCLUDES ######################################################################################
 use warnings;
@@ -19,7 +20,10 @@ use NGS::Tools::BWA;
 # list of arguments and default values go here as hash key/value pairs
 our %opts = (
 	fastq => undef,
-    number_of_lines => 40000000
+    number_of_reads => 40000000,
+    is_gzipped => 'false',
+    split => 'split',
+    zcat => 'zcat'
     );
 
 ### MAIN CALLER ###################################################################################
@@ -43,7 +47,10 @@ sub main {
         "help|?",
         "man",
         "fastq|f=s",
-        "number_of_lines|n:i"
+        "number_of_reads|n:i",
+        "is_gzipped|z:s",
+        "split|s:s",
+        "zcat|c:s"
         ) or pod2usage(64);
     
     pod2usage(1) if $opts{'help'};
@@ -57,8 +64,15 @@ sub main {
         }
 
     my $bwa = NGS::Tools::BWA->new();
-    $bwa->split_fastq();
-    
+    my $split_fastq = $bwa->split_fastq(
+        fastq => $opts{'fastq'},
+        number_of_reads => $opts{'number_of_reads'},
+        is_gzipped => $opts{'is_gzipped'},
+        split => $opts{'split'},
+        zcat => $opts{'zcat'}
+        );
+    system($split_fastq->{'cmd'});
+
     return 0;
     }
 
@@ -78,7 +92,10 @@ B<split_fastq_file.pl> [options] [file ...]
     --help              brief help message
     --man               full documentation
     --fastq             name of FASTQ file to be split (required)
-    --number_of_lines   number of lines within each split file (default: 40000000)
+    --number_of_reads   number of reads within each split file (default: 40000000)
+    --is_gzipped        flag to determine whether FASTQ file is gzipped (default: false)
+    --split             name of split program to use, this is to resolve an issue with Mac OS X where gsplit is used (defeault: gsplit)
+    --zcat              name of zcat program to use, this is to resolve an issue with Mac OS X where zcat is gzcat is used (default: zcat)
 
 =head1 OPTIONS
 
@@ -96,10 +113,22 @@ Print the manual page.
 
 Name of FASTQ file to split.
 
-=item B<--number_of_lines>
+=item B<--number_of_reads>
 
-Number of lines in each split FASTQ file (default: 40000000).  This value must be an integer
+Number of reads in each split FASTQ file (default: 40000000).  This value must be an integer
 that is a multiple of 4 since 4 lines represent a single read in the FASTQ format.
+
+=item B<--is_gzipped>
+
+Boolean flag to identify whether FASTQ files is gzipped (default: false).
+
+=item B<--split>
+
+Name of split program to use.  For Mac OS X users, use "gsplit" instead of split.  Default: split
+
+=item B<--zcat>
+
+Name of zcat program to use.  For Mac OS X users, use "gzcat" instead of zcat.  Default: zcat
 
 =back
 
@@ -109,7 +138,11 @@ B<split_fastq_file.pl> Split a FASTQ file into multiple FASTQ files for parallel
 
 =head1 EXAMPLE
 
+split_fastq_file.pl --fastq file.fastq --number_of_lines 80000000 --split gsplit
+
 split_fastq_file.pl --fastq file.fastq --number_of_lines 80000000
+
+split_fastq_file.pl --fastq file.fastq --number_of_lines 80000000 --split gsplit --zcat gzcat --is_gzipped true
 
 =head1 AUTHOR
 

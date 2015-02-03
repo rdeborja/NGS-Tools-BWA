@@ -49,12 +49,12 @@ my $bwa_run = $bwa->mem(
 
 my $expected_command = join(' ',
 	'bwa mem -t 1',
-	'-R @RG\tID:test_sample_id\tSM:test_sample\tLB:test_library\tPL:ILLUMINA\tPU:NONE\tCN:center ',
+	'-R \'@RG\tID:test_sample_id\tSM:test_sample\tLB:test_library\tPL:ILLUMINA\tPU:NONE\tCN:center\' ',
 	"$Bin/example/fasta/test.fasta",
 	"$Bin/example/fastq/file1.fastq",
 	"$Bin/example/fastq/file2.fastq",
 	'|',
 	'samtools view -S -b -',
-	'> file1.sam'
+	'> file1.bam'
 	);
 is($bwa_run->{'cmd'}, $expected_command, 'command matches expected');

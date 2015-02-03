@@ -25,5 +25,5 @@ t/example/fasta/test.fasta.ann
 t/example/fasta/test.fasta.bwt
 t/example/fasta/test.fasta.pac
 t/example/fasta/test.fasta.sa
-t/example/fastq/file1.fastq
-t/example/fastq/file2.fastq
+t/example/fastq/read1.fastq.gz
+t/example/fastq/read2.fastq.gz
