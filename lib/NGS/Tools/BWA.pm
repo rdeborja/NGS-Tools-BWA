@@ -33,9 +33,12 @@ by any Moose class to simplify its construction.
     use Moose;
     with 'NGS::Tools::BWA';
 
-=head1 VARIABLES
+For more information on the methods and attributes, see:
 
-=head1 SUBROUTINES/METHODS
+perldoc NGS::Tools::BWA::Roles::Mem
+perldoc NGS::Tools::BWA::Roles::Align
+perldoc NGS::Tools::BWA::Roles::PreProcessing
+perldoc NGS::Tools::BWA::Roles::SplitFastq
 
 =head1 AUTHOR
 

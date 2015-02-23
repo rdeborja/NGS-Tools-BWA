@@ -100,7 +100,6 @@ sub main {
     my $template_dir = join('/', dist_dir('HPF'), 'templates');
     my $template = 'submit_to_pbs.template';
     my @modules_to_load = ("bwa", "samtools");
-    print Dumper(\@modules_to_load);
     my $pbs = HPF::PBS->new();
     my $bwa_pbs = $pbs->create_cluster_shell_script(
         jobname => join('_', $opts{'sample'}, "bwa", "mem"),
