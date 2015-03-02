@@ -2,22 +2,22 @@
 use ExtUtils::MakeMaker;
 WriteMakefile
 (
-  'NAME' => 'NGS::Tools::BWA',
-  'VERSION_FROM' => 'lib/NGS/Tools/BWA.pm',
-  'PL_FILES' => {},
   'INSTALLDIRS' => 'site',
-  'PREREQ_PM' => {
-                   'namespace::autoclean' => 0,
-                   'File::Basename' => 0,
-                   'MooseX::Params::Validate' => 0,
-                   'Moose::Role' => 0,
-                   'Carp' => 0,
-                   'Test::More' => 0,
-                   'autodie' => 0
-                 },
   'EXE_FILES' => [
                    'bin/run_bwa_mem.pl',
                    'bin/split_fastq_file.pl'
-                 ]
+                 ],
+  'PL_FILES' => {},
+  'NAME' => 'NGS::Tools::BWA',
+  'PREREQ_PM' => {
+                   'autodie' => 0,
+                   'File::Basename' => 0,
+                   'namespace::autoclean' => 0,
+                   'MooseX::Params::Validate' => 0,
+                   'Carp' => 0,
+                   'Moose::Role' => 0,
+                   'Test::More' => 0
+                 },
+  'VERSION_FROM' => 'lib/NGS/Tools/BWA.pm'
 )
 ;

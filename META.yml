@@ -16,7 +16,7 @@ name: NGS-Tools-BWA
 provides:
   NGS::Tools::BWA:
     file: lib/NGS/Tools/BWA.pm
-    version: '0.09'
+    version: '0.10'
   NGS::Tools::BWA::Roles::Align:
     file: lib/NGS/Tools/BWA/Roles/Align.pm
   NGS::Tools::BWA::Roles::Mem:
@@ -34,4 +34,4 @@ requires:
   namespace::autoclean: '0'
 resources:
   license: http://dev.perl.org/licenses/
-version: '0.09'
+version: '0.10'

@@ -7,7 +7,7 @@ use warnings FATAL => 'all';
 use namespace::autoclean;
 use autodie;
 use File::Basename;
-use Data::Dumper;
+use Data::UUID;
 
 =head1 NAME
 
@@ -36,6 +36,14 @@ A method for splitting a FASTQ file into multiple FASTQ files.
 =item * prefix: a string to be used as the prefix for the split files
 
 =item * numeric_suffix: use numeric values for split files otherwise use alpha characters (default: y)
+
+=item * is_gzipped: flag to identify whether the files are in gzip format
+
+=item * split: the name of the program to use for splitting.  For Mac OS X use gsplit.
+
+=item * zcat: the name of the program to use for outputting the gzip file.  For Mac OS X use gzcat.
+
+=item * output_directory: the path to the output directory to store the split FASTQ files.
 
 =back
 
@@ -90,8 +98,16 @@ sub split_fastq {
 			isa			=> 'Str',
 			required	=> 0,
 			default		=> 'zcat'
+			},
+		output_directory => {
+			isa			=> 'Str',
+			required	=> 0,
+			default		=> '.'
 			}
 		);
+
+	# check to see if output directory exists, if it does not then create it
+	if (! -d )
 
 	my $prefix;
 	if ($args{'prefix'} eq '') {
@@ -101,8 +117,11 @@ sub split_fastq {
 		$prefix = $args{'prefix'};
 		}
 
+	# since a FASTQ file has 4 lines representing a single read, we multiply the number
+	# of reads desired by 4
+	my $number_of_reads = $args{'number_of_reads'} * 4;
 	my $options = join(' ',
-		'-l', $args{'number_of_reads'}
+		'-l', $number_of_reads
 		);
 	if ($args{'numeric_suffix'} eq 'y') {
 		$options = join(' ',
@@ -136,6 +155,104 @@ sub split_fastq {
 	my %return_values = (
 		output => $prefix,
 		cmd => $cmd
+		);
+
+	return(\%return_values);
+	}
+
+=head2 $obj->split_paired_end_fastq_files()
+
+Split a set of paired end read FATSQ files.  This will assume that both read pair FASTQ files have
+been generated correctly and that the read IDs correspond between files.
+
+=head3 Arguments:
+
+=over 2
+
+=item * fastq1: full path to the FASTQ file for read 1
+
+=item * fastq2: full path to the FASTQ file for read 2
+
+=item * number_of_reads: an integer value representing number of reads per split file (default: 10,000,000)
+
+=item * prefix: a string to be used as the prefix for the split files
+
+=item * numeric_suffix: use numeric values for split files otherwise use alpha characters (default: y)
+
+=item * is_gzipped: flag to identify whether the files are in gzip format
+
+=item * split: the name of the program to use for splitting.  For Mac OS X use gsplit.
+
+=item * zcat: the name of the program to use for outputting the gzip file.  For Mac OS X use gzcat.
+
+=back
+
+=head3 Return Value:
+
+This method returns an array reference containing hash references for pairs of read1 and read2 FASTQ files.
+
+=cut
+
+sub split_paired_end_fastq_files {
+	my $self = shift;
+	my %args = validated_hash(
+		\@_,
+		fastq1 => {
+			isa         => 'Str',
+			required    => 1
+			},
+		fastq2 => {
+			isa			=> 'Str',
+			required	=> 1
+			}
+		number_of_reads => {
+			isa			=> 'Int',
+			required	=> 0,
+			default		=> 10000000
+			},
+		prefix => {
+			isa			=> 'Str',
+			required	=> 0,
+			default		=> ''
+			},
+		numeric_suffix => {
+			isa			=> 'Str',
+			required	=> 0,
+			default		=> 'y'
+			},
+		is_gzipped => {
+			isa			=> 'Str',
+			required	=> 0,
+			default		=> 'false'
+			},
+		split => {
+			isa			=> 'Str',
+			required	=> 0,
+			default		=> 'split'
+			},
+		zcat => {
+			isa			=> 'Str',
+			required	=> 0,
+			default		=> 'zcat'
+			}
+		);
+
+	# check if the FASTQ files are gzip files
+	my $read1_gzip = 'false';
+	my $read2_gzip = 'false';
+	if ($args{'fastq1'} =~ m/\.gz$/) {
+		$read1_gzip = 'true';
+		}
+
+	# split the FASTQ file into a set number of reads per file
+
+	if ($args{'fastq2'} =~ m/\.gz$/) {
+		$read2_gzip = 'true';
+		}
+
+
+	my %return_values = (
+
 		);
 
 	return(\%return_values);

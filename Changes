@@ -33,3 +33,8 @@ Revision history for NGS-Tools-BWA
 
 0.10    2015-02-06
         Removed print statement used for debugging in bin/run_bwa_mem.pl script.
+
+0.11    2015-03-02
+        Made number of reads per file more explicit.  Since 4 lines of a FASTQ file represent
+        a single read, we now take the number of reads input and multiply by 4.
+        

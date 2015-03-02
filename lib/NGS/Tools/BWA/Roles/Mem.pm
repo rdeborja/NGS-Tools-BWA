@@ -52,139 +52,139 @@ Run the BWA mem alignment algorithm.
 =cut
 
 sub mem {
-	my $self = shift;
-	my %args = validated_hash(
-		\@_,
-		fastq1 => {
-			isa         => 'Str',
-			required    => 1
-			},
-		fastq2 => {
-			isa			=> 'Str',
-			required	=> 1
-			},
-		reference => {
-			isa			=> 'Str',
-			required	=> 1
-			},
-		output => {
-			isa			=> 'Str',
-			required	=> 0,
-			default		=> ''
-			},
-		bwa => {
-			isa			=> 'Str',
-			required	=> 0,
-			default		=> 'bwa'
-			},
-		threads => {
-			isa			=> 'Int',
-			required	=> 0,
-			default		=> 1
-			},
-		options => {
-			isa			=> 'ArrayRef',
-			required	=> 0,
-			default		=> []
-			},
-		readgroup => {
-			isa			=> 'Str',
-			required	=> 0,
-			default		=> ''
-			},
-		samtools => {
-			isa			=> 'Str',
-			required	=> 0,
-			default		=> 'samtools'
-			}
-		);
+    my $self = shift;
+    my %args = validated_hash(
+        \@_,
+        fastq1 => {
+            isa         => 'Str',
+            required    => 1
+            },
+        fastq2 => {
+            isa         => 'Str',
+            required    => 1
+            },
+        reference => {
+            isa         => 'Str',
+            required    => 1
+            },
+        output => {
+            isa         => 'Str',
+            required    => 0,
+            default     => ''
+            },
+        bwa => {
+            isa         => 'Str',
+            required    => 0,
+            default     => 'bwa'
+            },
+        threads => {
+            isa         => 'Int',
+            required    => 0,
+            default     => 1
+            },
+        options => {
+            isa         => 'ArrayRef',
+            required    => 0,
+            default     => []
+            },
+        readgroup => {
+            isa         => 'Str',
+            required    => 0,
+            default     => ''
+            },
+        samtools => {
+            isa         => 'Str',
+            required    => 0,
+            default     => 'samtools'
+            }
+        );
 
-	# check for output file in the arguments, if it doesn't exist,
-	# use the fastq1 prefix for the filename and append ".sam"
-	my $output;
-	if ($args{'output'} eq '') {
-		$output = join('.',
-			basename($args{'fastq1'}, qw(.fastq .fq. .fastq.gz .fq.gz)),
-			'bam'
-			);
-		}
-	else {
-		$output = $args{'output'};
-		}
+    # check for output file in the arguments, if it doesn't exist,
+    # use the fastq1 prefix for the filename and append ".sam"
+    my $output;
+    if ($args{'output'} eq '') {
+        $output = join('.',
+            basename($args{'fastq1'}, qw(.fastq .fq. .fastq.gz .fq.gz)),
+            'bam'
+            );
+        }
+    else {
+        $output = $args{'output'};
+        }
 
-	# the program to use is "bwa mem", here we're appending the full path to
-	# the bwa program
-	my $program = join(' ',
-		$args{'bwa'},
-		'mem'
-		);
+    # the program to use is "bwa mem", here we're appending the full path to
+    # the bwa program
+    my $program = join(' ',
+        $args{'bwa'},
+        'mem'
+        );
 
-	# create a string for additional options as provided in the passed
-	# arguments
-	my $additional_options = '';
-	if (@{$args{'options'}} != 0) {
-		foreach my $option (@{$args{'options'}}) {
-			$additional_options = join(' ',
-				$additional_options,
-				$option
-				);
-			}
-		}
+    # create a string for additional options as provided in the passed
+    # arguments
+    my $additional_options = '';
+    if (@{$args{'options'}} != 0) {
+        foreach my $option (@{$args{'options'}}) {
+            $additional_options = join(' ',
+                $additional_options,
+                $option
+                );
+            }
+        }
 
-	# for now, we're using a subset of options, as time progresses we'll expand the
-	# list to the full set of options
-	my $options;
-	if ($args{'readgroup'} ne '') {
-		my $readgroup = join('',
-			"\'",
-			$args{'readgroup'},
-			"\'"
-			);
-		$options = join(' ',
-			'-t', $args{'threads'},
-			'-R', $readgroup,
-			$additional_options,
-			$args{'reference'},
-			$args{'fastq1'},
-			$args{'fastq2'},
-			'|',
-			$args{'samtools'},
-			'view -S -b -',
-			'>',
-			$output
-			);
-		}
-	else {
-		$options = join(' ',
-			'-t', $args{'threads'},
-			$additional_options,
-			$args{'reference'},
-			$args{'fastq1'},
-			$args{'fastq2'},
-			'|',
-			$args{'samtools'},
-			'view -S -b -',
-			'>',
-			$output
-			);
-		}
+    # for now, we're using a subset of options, as time progresses we'll expand the
+    # list to the full set of options
+    my $options;
+    if ($args{'readgroup'} ne '') {
+        my $readgroup = join('',
+            "\'",
+            $args{'readgroup'},
+            "\'"
+            );
+        $options = join(' ',
+            '-t', $args{'threads'},
+            '-R', $readgroup,
+            $additional_options,
+            $args{'reference'},
+            $args{'fastq1'},
+            $args{'fastq2'},
+            '|',
+            $args{'samtools'},
+            'view -S -b -',
+            '>',
+            $output
+            );
+        }
+    else {
+        $options = join(' ',
+            '-t', $args{'threads'},
+            $additional_options,
+            $args{'reference'},
+            $args{'fastq1'},
+            $args{'fastq2'},
+            '|',
+            $args{'samtools'},
+            'view -S -b -',
+            '>',
+            $output
+            );
+        }
 
-	# finally, construct the command that can be executed
-	my $cmd = join(' ',
-		$program,
-		$options
-		);
+    # finally, construct the command that can be executed
+    my $cmd = join(' ',
+        $program,
+        $options
+        );
 
-	# we will be returning a hash reference that contains the final output
-	# file and the command to be executed, gives us flexibility for pipeline
-	# development
-	my %return_values = (
-		cmd => $cmd,
-		output => $output
-		);
+    # we will be returning a hash reference that contains the final output
+    # file and the command to be executed, gives us flexibility for pipeline
+    # development
+    my %return_values = (
+        cmd => $cmd,
+        output => $output
+        );
 
-	return(\%return_values);
-	}
+    return(\%return_values);
+    }
 
 =head2 $obj->create_read_group()
 
@@ -211,63 +211,63 @@ Construct the read group string that will be used in the BAM header.
 =cut
 
 sub create_read_group {
-	my $self = shift;
-	my %args = validated_hash(
-		\@_,
-		id => {
-			isa			=> 'Str',
-			required	=> 0,
-			default		=> ''
-			},
-		sample => {
-			isa         => 'Str',
-			required    => 1
-			},
-		library => {
-			isa			=> 'Str',
-			required	=> 1
-			},
-		center => {
-			isa			=> 'Str',
-			required	=> 1
-			},
-		platform => {
-			isa			=> 'Str',
-			required	=> 0,
-			default		=> 'ILLUMINA'
-			},
-		platform_unit => {
-			isa			=> 'Str',
-			required	=> 0,
-			default 	=> 'NONE'
-			}
+    my $self = shift;
+    my %args = validated_hash(
+        \@_,
+        id => {
+            isa         => 'Str',
+            required    => 0,
+            default     => ''
+            },
+        sample => {
+            isa         => 'Str',
+            required    => 1
+            },
+        library => {
+            isa         => 'Str',
+            required    => 1
+            },
+        center => {
+            isa         => 'Str',
+            required    => 1
+            },
+        platform => {
+            isa         => 'Str',
+            required    => 0,
+            default     => 'ILLUMINA'
+            },
+        platform_unit => {
+            isa         => 'Str',
+            required    => 0,
+            default     => 'NONE'
+            }
 
-		);
+        );
 
-	my $uuid_string;
-	if ($args{'id'} eq '') {
-		# create a UUID for the read group
-		my $uuid_object = Data::UUID->new();
-		my $uuid = $uuid_object->create();
-		$uuid_string = $uuid_object->to_string($uuid);
-		}
-	else {
-		$uuid_string = $args{'id'};
-		}
+    my $uuid_string;
+    if ($args{'id'} eq '') {
+        # create a UUID for the read group
+        my $uuid_object = Data::UUID->new();
+        my $uuid = $uuid_object->create();
+        $uuid_string = $uuid_object->to_string($uuid);
+        }
+    else {
+        $uuid_string = $args{'id'};
+        }
 
-	# construct the read group as reuqired
-	my $read_group_string = join('\t',
-		'@RG',
-		'ID:' . $uuid_string,
-		'SM:' . $args{'sample'},
-		'LB:' . $args{'library'},
-		'PL:' . $args{'platform'},
-		'PU:' . $args{'platform_unit'},
-		'CN:' . $args{'center'}
-		);
+    # construct the read group as reuqired
+    my $read_group_string = join('\t',
+        '@RG',
+        'ID:' . $uuid_string,
+        'SM:' . $args{'sample'},
+        'LB:' . $args{'library'},
+        'PL:' . $args{'platform'},
+        'PU:' . $args{'platform_unit'},
+        'CN:' . $args{'center'}
+        );
 
-	return($read_group_string);
-	}
+    return($read_group_string);
+    }
 
 =head1 AUTHOR
 

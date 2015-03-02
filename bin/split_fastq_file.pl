@@ -5,7 +5,7 @@
 
 ### HISTORY #######################################################################################
 # Version       Date            Developer           Comments
-# 0.01          2014-06-27		rdeborja            initial development
+# 0.01          2014-06-27      rdeborja            initial development
 # 0.02          2015-02-03      rdeborja            added gzip functionality
 
 ### INCLUDES ######################################################################################

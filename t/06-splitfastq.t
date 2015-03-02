@@ -26,7 +26,7 @@ lives_ok
 	'Class instantiated';
 my $split_output = $fastq->split_fastq(
 	fastq => $fastq_file,
-	number_of_reads => 4000,
+	number_of_reads => 1000,
 	is_gzipped => 'true'
 	);
 
