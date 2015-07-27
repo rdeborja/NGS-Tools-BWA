@@ -8,7 +8,8 @@
 # 0.01          2015-01-27      rdeborja            initial development
 # 0.02          2015-02-03      rdeborja            added qsub submission to main program, fixed
 #                                                   read group issue
-
+# 0.03          2015-07-27      rdeborja            removed manual submission of script to cluster
+#                                                   using method instead
 ### INCLUDES ######################################################################################
 use warnings;
 use strict;
@@ -20,7 +21,6 @@ use IPC::Run3;
 use Data::Dumper;
 use HPF::PBS;
 use File::ShareDir ':ALL';
-use IPC::Run3;
 
 ### COMMAND LINE DEFAULT ARGUMENTS ################################################################
 # list of arguments and default values go here as hash key/value pairs
@@ -110,9 +110,6 @@ sub main {
         modules_to_load => \@modules_to_load,
         walltime => '240:00:00',
         submit => 'true'
-        );
-    $pbs->submit_job(
-        script => $bwa_pbs->{'output'}
         );
 
     return 0;
