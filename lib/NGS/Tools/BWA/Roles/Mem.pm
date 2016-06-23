@@ -8,6 +8,7 @@ use namespace::autoclean;
 use autodie;
 use File::Basename;
 use Data::UUID;
+use Data::Dumper;
 
 =head1 NAME
 
@@ -122,13 +123,16 @@ sub mem {
     # create a string for additional options as provided in the passed
     # arguments
     my $additional_options = '';
-    if (@{$args{'options'}} != 0) {
-        foreach my $option (@{$args{'options'}}) {
-            $additional_options = join(' ',
-                $additional_options,
-                $option
-                );
-            }
+    if (scalar(@{$args{'options'}}) > 0) {
+        $additional_options = join(' ',
+            @{ $args{'options'} }
+            );
+        # foreach my $option (@{$args{'options'}}) {
+        #     $additional_options = join(' ',
+        #         $additional_options,
+        #         $option
+        #         );
+        #     }
         }
 
     # for now, we're using a subset of options, as time progresses we'll expand the
@@ -141,9 +145,9 @@ sub mem {
             "\'"
             );
         $options = join(' ',
+            $additional_options,
             '-t', $args{'threads'},
             '-R', $readgroup,
-            $additional_options,
             $args{'reference'},
             $args{'fastq1'},
             $args{'fastq2'},
@@ -156,8 +160,8 @@ sub mem {
         }
     else {
         $options = join(' ',
-            '-t', $args{'threads'},
             $additional_options,
+            '-t', $args{'threads'},
             $args{'reference'},
             $args{'fastq1'},
             $args{'fastq2'},
