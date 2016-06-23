@@ -18,11 +18,11 @@ NGS::Tools::BWA - Perl wrapper for the BWA alignment tool.
 
 =head1 VERSION
 
-Version 0.11
+Version 0.12
 
 =cut
 
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 
 =head1 SYNOPSIS
 
@@ -35,10 +35,13 @@ by any Moose class to simplify its construction.
 
 For more information on the methods and attributes, see:
 
-perldoc NGS::Tools::BWA::Roles::Mem
-perldoc NGS::Tools::BWA::Roles::Align
-perldoc NGS::Tools::BWA::Roles::PreProcessing
-perldoc NGS::Tools::BWA::Roles::SplitFastq
+* perldoc NGS::Tools::BWA::Roles::Mem
+
+* perldoc NGS::Tools::BWA::Roles::Align
+
+* perldoc NGS::Tools::BWA::Roles::PreProcessing
+
+* perldoc NGS::Tools::BWA::Roles::SplitFastq
 
 =head1 AUTHOR
 
