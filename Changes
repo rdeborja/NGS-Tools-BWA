@@ -37,4 +37,7 @@ Revision history for NGS-Tools-BWA
 0.11    2015-03-02
         Made number of reads per file more explicit.  Since 4 lines of a FASTQ file represent
         a single read, we now take the number of reads input and multiply by 4.
-        
+
+0.12    2017-01-31
+        Added the -M flag for Picard compatibility by adding shorter hard clipped reads
+        as secondary in the SAM flag.
