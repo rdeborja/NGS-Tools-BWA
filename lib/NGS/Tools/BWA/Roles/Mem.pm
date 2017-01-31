@@ -127,12 +127,6 @@ sub mem {
         $additional_options = join(' ',
             @{ $args{'options'} }
             );
-        # foreach my $option (@{$args{'options'}}) {
-        #     $additional_options = join(' ',
-        #         $additional_options,
-        #         $option
-        #         );
-        #     }
         }
 
     # for now, we're using a subset of options, as time progresses we'll expand the
